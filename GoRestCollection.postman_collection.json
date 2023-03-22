@@ -1,0 +1,225 @@
+{
+	"info": {
+		"_postman_id": "a2d27cb3-6a0e-4f88-9675-4da3d95548fc",
+		"name": "GoRestCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateNewUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function (){\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json()\r",
+							"\r",
+							"pm.collectionVariables.set('userId', jsonData.id)\r",
+							"\r",
+							"pm.test(\"Has ID Key\", function(){\r",
+							"    pm.expect(jsonData).to.have.property('id')\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"test mp\",\r\n    \"gender\":\"male\",\r\n    \"email\": \"testt@op.pl\",\r\n    \"status\":\"active\"\r\n}    ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}users",
+					"host": [
+						"{{url}}users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const getResponseSchema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"id\": \"integer\",\r",
+							"    \"name\": \"string\",\r",
+							"    \"email\": \"string\",\r",
+							"    \"gender\": \"string\",\r",
+							"    \"status\": \"string\"\r",
+							"}\r",
+							"const jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test(\"Status test\", function (){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Has ID Key\", function(){\r",
+							"    pm.expect(jsonData).to.have.property('id')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check status to be active\", function(){\r",
+							"    pm.expect(jsonData.status).to.be.eq('active')\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response schema\", ()=> {\r",
+							"    pm.response.to.have.jsonSchema(getResponseSchema)\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}users/{{userId}}",
+					"host": [
+						"{{url}}users"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function (){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {{userId}},\r\n    \"name\": \"test mp\",\r\n    \"gender\": \"male\",\r\n    \"status\": \"inactive\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}users/{{userId}}",
+					"host": [
+						"{{url}}users"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function (){\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}users/{{userId}}",
+					"host": [
+						"{{url}}users"
+					],
+					"path": [
+						"{{userId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "d73ccc9b0ddd31ad139357bde2d0b1dc0a5a2075e141cc944cba1e880e415546",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userId",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "url",
+			"value": "https://gorest.co.in/public/v2/",
+			"type": "default"
+		}
+	]
+}
